@@ -30,7 +30,8 @@ export const ListModulesResponseItem = zod.object({
   "estimatedMinutes": zod.number(),
   "iconName": zod.string(),
   "totalLessons": zod.number(),
-  "isFeatured": zod.boolean()
+  "isFeatured": zod.boolean(),
+  "section": zod.enum(['civilian', 'emt'])
 })
 export const ListModulesResponse = zod.array(ListModulesResponseItem)
 
@@ -48,7 +49,8 @@ export const GetFeaturedModulesResponseItem = zod.object({
   "estimatedMinutes": zod.number(),
   "iconName": zod.string(),
   "totalLessons": zod.number(),
-  "isFeatured": zod.boolean()
+  "isFeatured": zod.boolean(),
+  "section": zod.enum(['civilian', 'emt'])
 })
 export const GetFeaturedModulesResponse = zod.array(GetFeaturedModulesResponseItem)
 
@@ -70,7 +72,8 @@ export const GetModuleResponse = zod.object({
   "estimatedMinutes": zod.number(),
   "iconName": zod.string(),
   "totalLessons": zod.number(),
-  "isFeatured": zod.boolean()
+  "isFeatured": zod.boolean(),
+  "section": zod.enum(['civilian', 'emt'])
 })
 
 

@@ -22,6 +22,14 @@ export const ModuleDifficulty = {
   advanced: 'advanced',
 } as const;
 
+export type ModuleSection = typeof ModuleSection[keyof typeof ModuleSection];
+
+
+export const ModuleSection = {
+  civilian: 'civilian',
+  emt: 'emt',
+} as const;
+
 export interface Module {
   id: number;
   slug: string;
@@ -33,6 +41,7 @@ export interface Module {
   iconName: string;
   totalLessons: number;
   isFeatured: boolean;
+  section: ModuleSection;
 }
 
 export interface Lesson {

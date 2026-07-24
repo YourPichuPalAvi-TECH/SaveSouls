@@ -284,6 +284,9 @@ components:
           type: integer
         isFeatured:
           type: boolean
+        section:
+          type: string
+          enum: [civilian, emt]
       required:
         - id
         - slug
@@ -295,6 +298,7 @@ components:
         - iconName
         - totalLessons
         - isFeatured
+        - section
 
     Lesson:
       type: object

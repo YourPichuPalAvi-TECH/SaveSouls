@@ -13,6 +13,7 @@ export const modulesTable = pgTable("modules", {
   iconName: text("icon_name").notNull().default("Heart"),
   totalLessons: integer("total_lessons").notNull().default(0),
   isFeatured: boolean("is_featured").notNull().default(false),
+  section: text("section").notNull().default("civilian"),
   createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
 });
 

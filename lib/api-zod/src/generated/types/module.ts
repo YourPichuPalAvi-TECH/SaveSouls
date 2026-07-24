@@ -6,6 +6,7 @@
  * OpenAPI spec version: 0.1.0
  */
 import type { ModuleDifficulty } from './moduleDifficulty';
+import type { ModuleSection } from './moduleSection';
 
 export interface Module {
   id: number;
@@ -18,4 +19,5 @@ export interface Module {
   iconName: string;
   totalLessons: number;
   isFeatured: boolean;
+  section: ModuleSection;
 }

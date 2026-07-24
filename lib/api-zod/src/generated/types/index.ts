@@ -12,6 +12,7 @@ export * from './lesson';
 export * from './lessonProgress';
 export * from './module';
 export * from './moduleDifficulty';
+export * from './moduleSection';
 export * from './progressSummary';
 export * from './quizAttempt';
 export * from './quizAttemptInput';

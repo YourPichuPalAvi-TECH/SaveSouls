@@ -3,13 +3,21 @@ info:
   # Do not change the title, if the title changes, the import paths will be broken
   title: Api
   version: 0.1.0
-  description: API specification
+  description: First Aid & Medical Skills teaching platform API
 servers:
   - url: /api
     description: Base API path
 tags:
   - name: health
     description: Health operations
+  - name: modules
+    description: Learning module operations
+  - name: lessons
+    description: Lesson operations
+  - name: quizzes
+    description: Quiz operations
+  - name: progress
+    description: User progress tracking
 paths:
   /healthz:
     get:
@@ -24,6 +32,216 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HealthStatus"
+
+  /modules:
+    get:
+      operationId: listModules
+      tags: [modules]
+      summary: List all learning modules
+      responses:
+        "200":
+          description: List of modules
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Module"
+
+  /modules/featured:
+    get:
+      operationId: getFeaturedModules
+      tags: [modules]
+      summary: Get featured/recommended modules
+      responses:
+        "200":
+          description: Featured modules
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Module"
+
+  /modules/{moduleId}:
+    get:
+      operationId: getModule
+      tags: [modules]
+      summary: Get a module by ID
+      parameters:
+        - name: moduleId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Module detail
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Module"
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /modules/{moduleId}/lessons:
+    get:
+      operationId: listLessons
+      tags: [lessons]
+      summary: List lessons for a module
+      parameters:
+        - name: moduleId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Lessons list
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Lesson"
+
+  /lessons/{lessonId}:
+    get:
+      operationId: getLesson
+      tags: [lessons]
+      summary: Get a lesson by ID
+      parameters:
+        - name: lessonId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Lesson detail
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Lesson"
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /modules/{moduleId}/quiz:
+    get:
+      operationId: getModuleQuiz
+      tags: [quizzes]
+      summary: Get quiz questions for a module
+      parameters:
+        - name: moduleId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Quiz questions
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/QuizQuestion"
+
+  /quiz-attempts:
+    post:
+      operationId: submitQuizAttempt
+      tags: [quizzes]
+      summary: Submit a quiz attempt
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/QuizAttemptInput"
+      responses:
+        "201":
+          description: Attempt recorded
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/QuizAttempt"
+
+  /quiz-attempts/module/{moduleId}:
+    get:
+      operationId: getModuleAttempts
+      tags: [quizzes]
+      summary: Get quiz attempts for a module
+      parameters:
+        - name: moduleId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Quiz attempts
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/QuizAttempt"
+
+  /progress:
+    get:
+      operationId: getProgress
+      tags: [progress]
+      summary: Get all lesson progress entries
+      responses:
+        "200":
+          description: Progress list
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/LessonProgress"
+
+  /progress/summary:
+    get:
+      operationId: getProgressSummary
+      tags: [progress]
+      summary: Get aggregate progress summary
+      responses:
+        "200":
+          description: Progress summary
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProgressSummary"
+
+  /progress/lessons/{lessonId}:
+    post:
+      operationId: markLessonComplete
+      tags: [progress]
+      summary: Mark a lesson as complete
+      parameters:
+        - name: lessonId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Progress updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LessonProgress"
+
 components:
   schemas:
     HealthStatus:
@@ -34,3 +252,184 @@ components:
       required:
         - status
 
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+      required:
+        - error
+
+    Module:
+      type: object
+      properties:
+        id:
+          type: integer
+        slug:
+          type: string
+        title:
+          type: string
+        description:
+          type: string
+        category:
+          type: string
+        difficulty:
+          type: string
+          enum: [beginner, intermediate, advanced]
+        estimatedMinutes:
+          type: integer
+        iconName:
+          type: string
+        totalLessons:
+          type: integer
+        isFeatured:
+          type: boolean
+      required:
+        - id
+        - slug
+        - title
+        - description
+        - category
+        - difficulty
+        - estimatedMinutes
+        - iconName
+        - totalLessons
+        - isFeatured
+
+    Lesson:
+      type: object
+      properties:
+        id:
+          type: integer
+        moduleId:
+          type: integer
+        order:
+          type: integer
+        title:
+          type: string
+        content:
+          type: string
+        tips:
+          type: array
+          items:
+            type: string
+        warningNote:
+          type: ["string", "null"]
+      required:
+        - id
+        - moduleId
+        - order
+        - title
+        - content
+        - tips
+
+    QuizQuestion:
+      type: object
+      properties:
+        id:
+          type: integer
+        moduleId:
+          type: integer
+        question:
+          type: string
+        options:
+          type: array
+          items:
+            type: string
+        correctAnswer:
+          type: integer
+        explanation:
+          type: string
+      required:
+        - id
+        - moduleId
+        - question
+        - options
+        - correctAnswer
+        - explanation
+
+    QuizAttemptInput:
+      type: object
+      properties:
+        moduleId:
+          type: integer
+        score:
+          type: integer
+        totalQuestions:
+          type: integer
+        answers:
+          type: array
+          items:
+            type: integer
+      required:
+        - moduleId
+        - score
+        - totalQuestions
+        - answers
+
+    QuizAttempt:
+      type: object
+      properties:
+        id:
+          type: integer
+        moduleId:
+          type: integer
+        score:
+          type: integer
+        totalQuestions:
+          type: integer
+        percentage:
+          type: integer
+        passed:
+          type: boolean
+        completedAt:
+          type: string
+          format: date-time
+      required:
+        - id
+        - moduleId
+        - score
+        - totalQuestions
+        - percentage
+        - passed
+        - completedAt
+
+    LessonProgress:
+      type: object
+      properties:
+        lessonId:
+          type: integer
+        moduleId:
+          type: integer
+        completedAt:
+          type: string
+          format: date-time
+      required:
+        - lessonId
+        - moduleId
+        - completedAt
+
+    ProgressSummary:
+      type: object
+      properties:
+        totalModules:
+          type: integer
+        completedModules:
+          type: integer
+        totalLessons:
+          type: integer
+        completedLessons:
+          type: integer
+        averageQuizScore:
+          type: ["integer", "null"]
+        quizzesTaken:
+          type: integer
+        streakDays:
+          type: integer
+      required:
+        - totalModules
+        - completedModules
+        - totalLessons
+        - completedLessons
+        - quizzesTaken
+        - streakDays

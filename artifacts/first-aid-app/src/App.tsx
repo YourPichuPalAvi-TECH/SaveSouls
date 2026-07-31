@@ -5,6 +5,7 @@ import NotFound from '@/pages/not-found';
 import { Route, Switch, Router as WouterRouter } from 'wouter';
 
 import Home from '@/pages/Home';
+import SaveSoulsPage from '@/pages/SaveSouls';
 import ModuleList from '@/pages/ModuleList';
 import ModuleDetail from '@/pages/ModuleDetail';
 import LessonView from '@/pages/LessonView';
@@ -24,6 +25,7 @@ function Router() {
   return (
     <Switch>
       <Route path="/" component={Home} />
+      <Route path="/about" component={SaveSoulsPage} />
       <Route path="/modules" component={ModuleList} />
       <Route path="/modules/:moduleId" component={ModuleDetail} />
       <Route path="/modules/:moduleId/lessons/:lessonId" component={LessonView} />

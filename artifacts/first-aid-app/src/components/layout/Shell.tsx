@@ -7,7 +7,7 @@ export function Shell({ children }: { children: React.ReactNode }) {
 
   const navItems = [
     { href: "/", icon: Home, label: "Home" },
-    { href: "/modules", icon: BookOpen, label: "Library" },
+    { href: "/about", icon: BookOpen, label: "SaveSouls" },
     { href: "/progress", icon: Award, label: "Progress" },
   ];
 

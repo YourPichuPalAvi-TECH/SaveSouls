@@ -1,5 +1,5 @@
 import { Link, useLocation } from "wouter";
-import { BookOpen, Home, Award, ChevronLeft } from "lucide-react";
+import { BookOpen, Home, Award, ChevronLeft, GraduationCap } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 export function Shell({ children }: { children: React.ReactNode }) {
@@ -7,7 +7,7 @@ export function Shell({ children }: { children: React.ReactNode }) {
 
   const navItems = [
     { href: "/", icon: Home, label: "Home" },
-    { href: "/about", icon: BookOpen, label: "SaveSouls" },
+    { href: "/dashboard", icon: GraduationCap, label: "Training" },
     { href: "/progress", icon: Award, label: "Progress" },
   ];
 
